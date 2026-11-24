@@ -1,0 +1,16 @@
+const app = require('./app');
+const pool = require('./config/db');
+
+const PORT = Number(process.env.PORT) || 5000;
+
+(async () => {
+  try {
+    await pool.query('SELECT 1');
+    console.log('PostgreSQL connected');
+  } catch (err) {
+    console.error('Cannot connect to PostgreSQL:', err.message);
+    console.error('Check the DB_* values in backend/.env and make sure the database exists (npm run db:init).');
+    process.exit(1);
+  }
+  app.listen(PORT, () => console.log(`API running on http://localhost:${PORT}/api/hotels`));
+})();
